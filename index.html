@@ -1,43 +1,81 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Mobject</title>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style type="text/tailwindcss">
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+    body {
+      font-family: 'Inter', sans-serif;
+    }
+
+    .bg-custom {
+      background-image: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('https://wallpapercave.com/wp/wp12888527.jpg');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+    }
+
+    .glass {
+      background: rgba(0, 0, 0, 0.75);
+      backdrop-filter: blur(12px);
+      border: 2px solid rgba(255, 255, 255, 0.1);
+      box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+    }
+  </style>
 </head>
-<body>
-    <h1>Minecraft Mob behaviour code generator</h1>
 
-    <dev>
-        <h2>Description</h2>
-        
-        <dev>
-            <p>Entity name</p>
-            <input value="mob:mobname" type="text" id="mobName">
-        </dev>
-    </dev>
+<body class="bg-custom min-h-screen flex items-center justify-center p-4">
+  <div class="glass rounded-3xl p-8 max-w-6xl w-full flex flex-col md:flex-row gap-8">
+    <!-- Left: Visual Editor -->
+    <div class="flex-1">
+      <h1 class="text-4xl font-extrabold text-white text-center mb-8">
+        Minecraft Mob Behaviour Code Generator
+      </h1>
 
-        <p id="output">output</p>
-        <button onclick="submit()">Submit</button>
+      <h2 class="text-2xl font-semibold text-white mb-4">Description</h2>
 
+      <label for="mobName" class="text-white mb-2 block font-medium">Entity Name</label>
+      <input
+        type="text"
+        id="mobName"
+        value="mob:mobname"
+        placeholder="minecraft:villager"
+        class="w-full p-3 rounded-lg bg-white/10 border border-white/20 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-blue-500 mb-4"
+      />
 
+      <button
+        onclick="submitMob()"
+        class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition"
+      >
+        Submit
+      </button>
 
-    <!-- Json output displays-->
-    <dev>
+      <p id="output" class="text-white mt-4"></p>
+    </div>
 
-        <p style="font-family: 'Courier New', Courier, monospace;">
-            code
-        </p>
+    <!-- Right: JSON Output (placeholder) -->
+    <div class="flex-1 bg-black/40 text-white p-6 rounded-xl border border-white/10 overflow-auto">
+      <h2 class="text-2xl font-semibold mb-4">Generated JSON</h2>
+      <pre id="jsonOutput" class="whitespace-pre-wrap bg-black/20 p-4 rounded-lg border border-white/10">
+{
+  "example": "Your JSON will appear here"
+}
+      </pre>
+    </div>
+  </div>
 
-    </dev>
-
-    <script>
-        function submit() {
-            const mobName = document.getElementById('mobName').value 
-            document.getElementById("output").innerText = mobName
-            }
-    </script>
-
-
+  <script>
+    function submitMob() {
+      const mobName = document.getElementById('mobName').value;
+      document.getElementById('output').innerText = `Entity Name: ${mobName}`;
+    }
+  </script>
 </body>
 </html>
