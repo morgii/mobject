@@ -54,6 +54,27 @@
 				<p>⚠️ If you don't have any loot table, you can create from <a href="#">here</a>. But don't leave this blank.</p>
 			</div>
 
+			<div>
+				<label for="entityFamily">Mob's nearest family type</label>
+				<select id="entityFamily" name="entityFamily" class="border p-2 rounded">
+				<option value="animal">animal</option>
+				<option value="monster">monster</option>
+				<option value="undead">undead</option>
+				<option value="arthropod">arthropod</option>
+				<option value="illager">illager</option>
+				<option value="villager">villager</option>
+				<option value="zombie">zombie</option>
+				<option value="skeleton">skeleton</option>
+				<option value="slime">slime</option>
+				<option value="piglin">piglin</option>
+				<option value="warden">warden</option>
+				<option value="aquatic">aquatic</option>
+				<option value="goat">goat</option>
+				<option value="neutral">neutral</option>
+				<option value="hostile">hostile</option>
+				</select>
+
+			</div>
 
 
 
@@ -88,7 +109,7 @@
 
     <script>
 
-function generateJson(mobName, isSpawnable, isSummonable, breedItem, babyScale, lootTableDirectory){
+function generateJson(mobName, isSpawnable, isSummonable, breedItem, babyScale, lootTableDirectory, entityFamily){
 
 
 return generatedJson = `
@@ -149,7 +170,7 @@ return generatedJson = `
 		"components": {
 			"minecraft:type_family": {
 				"family": [
-					"cow",
+					"${entityFamily}",
 					"mob"
 				]
 			},
@@ -327,10 +348,11 @@ return generatedJson = `
 			const breedItem = document.getElementById("breedItem").value
 			const babyScale = document.getElementById("babyScale").value
 			const lootTableDirectory = document.getElementById("lootTableDirectory").value
+			const entityFamily = document.getElementById("entityFamily").value
 
 
 			// json code generator
-			const rawJson = generateJson(mobName, isSpawnable, isSummonable, breedItem, babyScale, lootTableDirectory) //passing peram value
+			const rawJson = generateJson(mobName, isSpawnable, isSummonable, breedItem, babyScale, lootTableDirectory, entityFamily) //passing peram value
 			const parsedJson = JSON.parse(rawJson)
 			document.getElementById('output').innerText = JSON.stringify(parsedJson, null, 3)
             }
