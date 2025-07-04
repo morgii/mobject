@@ -4,362 +4,397 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdn.tailwindcss.com"></script>
-    <title>Document</title>
+    <title>Minecraft Mob Behavior Code Generator</title>
+    <style>
+        .json-container {
+            max-height: 80vh;
+            overflow-y: auto;
+            background-color: #1e293b;
+        }
+        .json-container::-webkit-scrollbar {
+            width: 8px;
+        }
+        .json-container::-webkit-scrollbar-track {
+            background: #0f172a;
+        }
+        .json-container::-webkit-scrollbar-thumb {
+            background: #334155;
+            border-radius: 4px;
+        }
+        .input-field {
+            background-color: #1e293b;
+            border-color: #334155;
+        }
+        .input-field:focus {
+            outline: none;
+            border-color: #60a5fa;
+            box-shadow: 0 0 0 1px #60a5fa;
+        }
+        /* Added label border styles */
+        .input-label-container {
+            border: 1px solid #334155;
+            border-radius: 0.375rem;
+            padding: 0.5rem;
+            margin-bottom: 0.5rem;
+            background-color: #1e293b;
+        }
+        .input-label {
+            display: block;
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: #e2e8f0;
+            margin-bottom: 0.25rem;
+        }
+    </style>
 </head>
-<body>
-    <h1>Minecraft Mob behaviour code generator</h1>
-	<div class="flex gap-4">
-		<div>
-			<h2>Description</h2>
-			
-			<div>
-				<p>Entity name</p>
-				<input value="mob:mobname" type="text" id="mobName">
-			</div>
+<body class="bg-slate-900 text-slate-100 p-6">
+    <div class="max-w-7xl mx-auto">
+        <h1 class="text-3xl font-bold mb-8 text-center">Minecraft Mob Behavior Code Generator</h1>
+        
+        <div class="flex flex-col lg:flex-row gap-8">
+            <!-- Input Section -->
+            <div class="flex-1 bg-slate-800 p-6 rounded-xl shadow-lg">
+                <h2 class="text-xl font-semibold mb-4 border-b border-slate-700 pb-2">Description</h2>
+                
+                <div class="space-y-4">
+                    <div class="input-label-container">
+                        <label class="input-label">Entity Name</label>
+                        <input value="mob:mobname" type="text" id="mobName" 
+                               class="w-full p-2 rounded input-field">
+                    </div>
 
-			<div>
-				<p>Is it spawnable?</p>
-				<input type="checkbox" id="isSpawnable">
-			</div>
+                    <div class="flex gap-4">
+                        <div class="input-label-container flex-1">
+                            <label class="input-label">Is it spawnable?</label>
+                            <input type="checkbox" id="isSpawnable" class="h-4 w-4">
+                        </div>
+                        <div class="input-label-container flex-1">
+                            <label class="input-label">Is it summonable?</label>
+                            <input type="checkbox" id="isSummonable" class="h-4 w-4" checked>
+                        </div>
+                    </div>
 
-			<div>
-				<p>Is it summonable?</p>
-				<input type="checkbox" id="isSummonable">
-			</div>
+                    <div class="input-label-container">
+                        <label class="input-label">Feedable Item</label>
+                        <select id="breedItem" name="breedItem" 
+                                class="w-full p-2 rounded input-field">
+                            <option value="wheat">Wheat</option>
+                            <option value="carrots">Carrots</option>
+                            <option value="potatoes">Potatoes</option>
+                            <option value="beetroot">Beetroot</option>
+                            <option value="seeds">Seeds</option>
+                            <option value="melon_seeds">Melon Seeds</option>
+                            <option value="pumpkin_seeds">Pumpkin Seeds</option>
+                            <option value="beetroot_seeds">Beetroot Seeds</option>
+                            <option value="sweet_berries">Sweet Berries</option>
+                        </select>
+                    </div>
 
-			<div>
-			<label for="breedItem">Select Feedable Item:</label>
-			<select id="breedItem" name="breedItem" class="border p-2 rounded">
-			<option value="wheat">Wheat</option>
-			<option value="carrots">Carrots</option>
-			<option value="potatoes">Potatoes</option>
-			<option value="beetroot">Beetroot</option>
-			<option value="seeds">Seeds</option>
-			<option value="melon_seeds">Melon Seeds</option>
-			<option value="pumpkin_seeds">Pumpkin Seeds</option>
-			<option value="beetroot_seeds">Beetroot Seeds</option>
-			<option value="sweet_berries">Sweet Berries</option>
-			</select>
-			</div>
+                    <div class="input-label-container">
+                        <label class="input-label">Baby's scale (0.1 to 1.0)</label>
+                        <input type="range" min="0.1" max="1" step="0.1" value="0.5" id="babyScale" 
+                               oninput="document.getElementById('babyScaleValue').innerText = this.value"
+                               class="w-full">
+                        <p id="babyScaleValue" class="text-sm text-slate-400 mt-1">0.5</p>
+                    </div>
 
-			<div>
-				<p>Baby's scale according to parents</p>
-				<input type="range" min="0.1" max="1" step="0.1" value="0.5" id="babyScale" oninput="getElementById('babyScaleValue').innerText = this.value">
-				<p id="babyScaleValue">0.5</p>
-			</div>
+                    <div class="input-label-container">
+                        <label class="input-label">Loot table directory</label>
+                        <input type="text" id="lootTableDirectory" value="loot_tables/entities/cow.json"
+                               class="w-full p-2 rounded input-field">
+                        <p class="text-xs text-slate-400 mt-1">⚠️ If you don't have any loot table, you can create one from <a href="#" class="text-blue-400 hover:underline">here</a>. Don't leave this blank.</p>
+                    </div>
 
-			<div>
-				<p>Loot table directory</p>
-				<input type="text" id="lootTableDirectory" value="loot_tables/entities/cow.json">
-				<p>⚠️ If you don't have any loot table, you can create from <a href="#">here</a>. But don't leave this blank.</p>
-			</div>
+                    <div class="input-label-container">
+                        <label class="input-label">Mob's family type</label>
+                        <select id="entityFamily" name="entityFamily" 
+                                class="w-full p-2 rounded input-field">
+                            <option value="animal">animal</option>
+                            <option value="monster">monster</option>
+                            <option value="undead">undead</option>
+                            <option value="arthropod">arthropod</option>
+                            <option value="illager">illager</option>
+                            <option value="villager">villager</option>
+                            <option value="zombie">zombie</option>
+                            <option value="skeleton">skeleton</option>
+                            <option value="slime">slime</option>
+                            <option value="piglin">piglin</option>
+                            <option value="warden">warden</option>
+                            <option value="aquatic">aquatic</option>
+                            <option value="goat">goat</option>
+                            <option value="neutral">neutral</option>
+                            <option value="hostile">hostile</option>
+                        </select>
+                    </div>
 
-			<div>
-				<label for="entityFamily">Mob's nearest family type</label>
-				<select id="entityFamily" name="entityFamily" class="border p-2 rounded">
-				<option value="animal">animal</option>
-				<option value="monster">monster</option>
-				<option value="undead">undead</option>
-				<option value="arthropod">arthropod</option>
-				<option value="illager">illager</option>
-				<option value="villager">villager</option>
-				<option value="zombie">zombie</option>
-				<option value="skeleton">skeleton</option>
-				<option value="slime">slime</option>
-				<option value="piglin">piglin</option>
-				<option value="warden">warden</option>
-				<option value="aquatic">aquatic</option>
-				<option value="goat">goat</option>
-				<option value="neutral">neutral</option>
-				<option value="hostile">hostile</option>
-				</select>
+                    <button onclick="submit()" 
+                            class="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-lg font-medium transition mt-4">
+                        Generate JSON
+                    </button>
+                </div>
+            </div>
 
-			</div>
-
-
-
-
-
-			<button onclick="submit()">Submit</button>
-		</div>
-
-
-
-
-			
-
-
-
-		<!-- Json output displays-->
-		<div>
-
-			<p style="font-family: 'Courier New', Courier, monospace;" id="output">
-				code
-			</p>
-
-		</div>
-	</div>
-
-
-
-
-
-
-
+            <!-- Output Section -->
+            <div class="flex-1 bg-slate-800 p-6 rounded-xl shadow-lg">
+                <h2 class="text-xl font-semibold mb-4 border-b border-slate-700 pb-2">Generated JSON</h2>
+                <div class="json-container p-4 rounded-lg">
+                    <pre id="output" class="whitespace-pre-wrap font-mono text-sm">
+{
+  "format_version": "1.16.0",
+  "minecraft:entity": {
+    "description": {
+      "identifier": "mob:mobname",
+      "is_spawnable": true,
+      "is_summonable": true,
+      "is_experimental": false
+    }
+  }
+}</pre>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <script>
-
-function generateJson(mobName, isSpawnable, isSummonable, breedItem, babyScale, lootTableDirectory, entityFamily){
-
-
-return generatedJson = `
+        function generateJson(mobName, isSpawnable, isSummonable, breedItem, babyScale, lootTableDirectory, entityFamily) {
+            return generatedJson = `
 {
-	"format_version": "1.16.0",
-	"minecraft:entity": {
-		"description": {
-			"identifier": "${mobName}",
-			"is_spawnable": ${isSpawnable},
-			"is_summonable": ${isSummonable},
-			"is_experimental": false
-		},
-		"component_groups": {
-			"${mobName}_baby": {
-				"minecraft:is_baby": {},
-				"minecraft:scale": {
-					"value": ${babyScale}
-				},
-				"minecraft:ageable": {
-					"duration": 1200,
-					"feed_items": "${breedItem}",
-					"grow_up": {
-						"event": "minecraft:ageable_grow_up",
-						"target": "self"
-					}
-				},
-				"minecraft:behavior.follow_parent": {
-					"priority": 6,
-					"speed_multiplier": 1.1
-				}
-			},
-			"${mobName}_adult": {
-				"minecraft:experience_reward": {
-					"on_bred": "Math.Random(1,7)",
-					"on_death": "query.last_hit_by_player ? Math.Random(1,3) : 0"
-				},
-				"minecraft:loot": {
-					"table": "${lootTableDirectory}"
-				},
-				"minecraft:behavior.breed": {
-					"priority": 3,
-					"speed_multiplier": 1
-				},
-				"minecraft:breedable": {
-					"require_tame": false,
-					"breed_items": "${breedItem}",
-					"breeds_with": {
-						"mate_type": "${mobName}",
-						"baby_type": "${mobName}",
-						"breed_event": {
-							"event": "minecraft:entity_born",
-							"target": "baby"
-						}
-					}
-				}
-			}
-		},
-		"components": {
-			"minecraft:type_family": {
-				"family": [
-					"${entityFamily}",
-					"mob"
-				]
-			},
-			"minecraft:breathable": {
-				"total_supply": 15,
-				"suffocate_time": 0
-			},
-			"minecraft:navigation.walk": {
-				"can_path_over_water": true,
-				"avoid_water": true,
-				"avoid_damage_blocks": true
-			},
-			"minecraft:movement.basic": {},
-			"minecraft:jump.static": {},
-			"minecraft:can_climb": {},
-			"minecraft:collision_box": {
-				"width": 0.9,
-				"height": 1.3
-			},
-			"minecraft:nameable": {},
-			"minecraft:health": {
-				"value": 10,
-				"max": 10
-			},
-			"minecraft:hurt_on_condition": {
-				"damage_conditions": [
-					{
-						"filters": {
-							"test": "in_lava",
-							"subject": "self",
-							"operator": "==",
-							"value": true
-						},
-						"cause": "lava",
-						"damage_per_tick": 4
-					}
-				]
-			},
-			"minecraft:movement": {
-				"value": 0.25
-			},
-			"minecraft:despawn": {
-				"despawn_from_distance": {}
-			},
-			"minecraft:behavior.float": {
-				"priority": 0
-			},
-			"minecraft:behavior.panic": {
-				"priority": 1,
-				"speed_multiplier": 1.25
-			},
-			"minecraft:behavior.mount_pathing": {
-				"priority": 2,
-				"speed_multiplier": 1.5,
-				"target_dist": 0,
-				"track_target": true
-			},
-			"minecraft:behavior.breed": {
-				"priority": 3,
-				"speed_multiplier": 1
-			},
-			"minecraft:behavior.tempt": {
-				"priority": 4,
-				"speed_multiplier": 1.25,
-				"items": [
-					"wheat"
-				]
-			},
-			"minecraft:behavior.follow_parent": {
-				"priority": 5,
-				"speed_multiplier": 1.1
-			},
-			"minecraft:behavior.random_stroll": {
-				"priority": 6,
-				"speed_multiplier": 0.8
-			},
-			"minecraft:behavior.look_at_player": {
-				"priority": 7,
-				"look_distance": 6,
-				"probability": 0.02
-			},
-			"minecraft:behavior.random_look_around": {
-				"priority": 9
-			},
-			"minecraft:leashable": {
-				"soft_distance": 4,
-				"hard_distance": 6,
-				"max_distance": 10
-			},
-			"minecraft:balloonable": {},
-			"minecraft:rideable": {
-				"seat_count": 1,
-				"family_types": [
-					"zombie"
-				],
-				"seats": {
-					"position": [
-						0,
-						1.105,
-						0
-					]
-				}
-			},
-			"minecraft:physics": {},
-			"minecraft:pushable": {
-				"is_pushable": true,
-				"is_pushable_by_piston": true
-			},
-			"minecraft:conditional_bandwidth_optimization": {}
-		},
-		"events": {
-			"minecraft:entity_spawned": {
-				"randomize": [
-					{
-						"weight": 95,
-						"trigger": "minecraft:spawn_adult"
-					},
-					{
-						"weight": 5,
-						"add": {
-							"component_groups": [
-								"${mobName}_baby"
-							]
-						}
-					}
-				]
-			},
-			"minecraft:entity_born": {
-				"add": {
-					"component_groups": [
-						"${mobName}_baby"
-					]
-				}
-			},
-			"minecraft:entity_transformed": {
-				"remove": {},
-				"add": {
-					"component_groups": [
-						"${mobName}_adult"
-					]
-				}
-			},
-			"minecraft:ageable_grow_up": {
-				"remove": {
-					"component_groups": [
-						"${mobName}_baby"
-					]
-				},
-				"add": {
-					"component_groups": [
-						"${mobName}_adult"
-					]
-				}
-			},
-			"minecraft:spawn_adult": {
-				"add": {
-					"component_groups": [
-						"${mobName}_adult"
-					]
-				}
-			}
-		}
-	}
-}
-`;
-
-}
-
-
+    "format_version": "1.16.0",
+    "minecraft:entity": {
+        "description": {
+            "identifier": "${mobName}",
+            "is_spawnable": ${isSpawnable},
+            "is_summonable": ${isSummonable},
+            "is_experimental": false
+        },
+        "component_groups": {
+            "${mobName}_baby": {
+                "minecraft:is_baby": {},
+                "minecraft:scale": {
+                    "value": ${babyScale}
+                },
+                "minecraft:ageable": {
+                    "duration": 1200,
+                    "feed_items": "${breedItem}",
+                    "grow_up": {
+                        "event": "minecraft:ageable_grow_up",
+                        "target": "self"
+                    }
+                },
+                "minecraft:behavior.follow_parent": {
+                    "priority": 6,
+                    "speed_multiplier": 1.1
+                }
+            },
+            "${mobName}_adult": {
+                "minecraft:experience_reward": {
+                    "on_bred": "Math.Random(1,7)",
+                    "on_death": "query.last_hit_by_player ? Math.Random(1,3) : 0"
+                },
+                "minecraft:loot": {
+                    "table": "${lootTableDirectory}"
+                },
+                "minecraft:behavior.breed": {
+                    "priority": 3,
+                    "speed_multiplier": 1
+                },
+                "minecraft:breedable": {
+                    "require_tame": false,
+                    "breed_items": "${breedItem}",
+                    "breeds_with": {
+                        "mate_type": "${mobName}",
+                        "baby_type": "${mobName}",
+                        "breed_event": {
+                            "event": "minecraft:entity_born",
+                            "target": "baby"
+                        }
+                    }
+                }
+            }
+        },
+        "components": {
+            "minecraft:type_family": {
+                "family": [
+                    "${entityFamily}",
+                    "mob"
+                ]
+            },
+            "minecraft:breathable": {
+                "total_supply": 15,
+                "suffocate_time": 0
+            },
+            "minecraft:navigation.walk": {
+                "can_path_over_water": true,
+                "avoid_water": true,
+                "avoid_damage_blocks": true
+            },
+            "minecraft:movement.basic": {},
+            "minecraft:jump.static": {},
+            "minecraft:can_climb": {},
+            "minecraft:collision_box": {
+                "width": 0.9,
+                "height": 1.3
+            },
+            "minecraft:nameable": {},
+            "minecraft:health": {
+                "value": 10,
+                "max": 10
+            },
+            "minecraft:hurt_on_condition": {
+                "damage_conditions": [
+                    {
+                        "filters": {
+                            "test": "in_lava",
+                            "subject": "self",
+                            "operator": "==",
+                            "value": true
+                        },
+                        "cause": "lava",
+                        "damage_per_tick": 4
+                    }
+                ]
+            },
+            "minecraft:movement": {
+                "value": 0.25
+            },
+            "minecraft:despawn": {
+                "despawn_from_distance": {}
+            },
+            "minecraft:behavior.float": {
+                "priority": 0
+            },
+            "minecraft:behavior.panic": {
+                "priority": 1,
+                "speed_multiplier": 1.25
+            },
+            "minecraft:behavior.mount_pathing": {
+                "priority": 2,
+                "speed_multiplier": 1.5,
+                "target_dist": 0,
+                "track_target": true
+            },
+            "minecraft:behavior.breed": {
+                "priority": 3,
+                "speed_multiplier": 1
+            },
+            "minecraft:behavior.tempt": {
+                "priority": 4,
+                "speed_multiplier": 1.25,
+                "items": [
+                    "${breedItem}"
+                ]
+            },
+            "minecraft:behavior.follow_parent": {
+                "priority": 5,
+                "speed_multiplier": 1.1
+            },
+            "minecraft:behavior.random_stroll": {
+                "priority": 6,
+                "speed_multiplier": 0.8
+            },
+            "minecraft:behavior.look_at_player": {
+                "priority": 7,
+                "look_distance": 6,
+                "probability": 0.02
+            },
+            "minecraft:behavior.random_look_around": {
+                "priority": 9
+            },
+            "minecraft:leashable": {
+                "soft_distance": 4,
+                "hard_distance": 6,
+                "max_distance": 10
+            },
+            "minecraft:balloonable": {},
+            "minecraft:rideable": {
+                "seat_count": 1,
+                "family_types": [
+                    "zombie"
+                ],
+                "seats": {
+                    "position": [
+                        0,
+                        1.105,
+                        0
+                    ]
+                }
+            },
+            "minecraft:physics": {},
+            "minecraft:pushable": {
+                "is_pushable": true,
+                "is_pushable_by_piston": true
+            },
+            "minecraft:conditional_bandwidth_optimization": {}
+        },
+        "events": {
+            "minecraft:entity_spawned": {
+                "randomize": [
+                    {
+                        "weight": 95,
+                        "trigger": "minecraft:spawn_adult"
+                    },
+                    {
+                        "weight": 5,
+                        "add": {
+                            "component_groups": [
+                                "${mobName}_baby"
+                            ]
+                        }
+                    }
+                ]
+            },
+            "minecraft:entity_born": {
+                "add": {
+                    "component_groups": [
+                        "${mobName}_baby"
+                    ]
+                }
+            },
+            "minecraft:entity_transformed": {
+                "remove": {},
+                "add": {
+                    "component_groups": [
+                        "${mobName}_adult"
+                    ]
+                }
+            },
+            "minecraft:ageable_grow_up": {
+                "remove": {
+                    "component_groups": [
+                        "${mobName}_baby"
+                    ]
+                },
+                "add": {
+                    "component_groups": [
+                        "${mobName}_adult"
+                    ]
+                }
+            },
+            "minecraft:spawn_adult": {
+                "add": {
+                    "component_groups": [
+                        "${mobName}_adult"
+                    ]
+                }
+            }
+        }
+    }
+}`;
+        }
 
         function submit() {
-            const mobName = document.getElementById('mobName').value
-            const isSpawnable = document.getElementById("isSpawnable").checked
-            const isSummonable = document.getElementById("isSummonable").checked
-			const breedItem = document.getElementById("breedItem").value
-			const babyScale = document.getElementById("babyScale").value
-			const lootTableDirectory = document.getElementById("lootTableDirectory").value
-			const entityFamily = document.getElementById("entityFamily").value
+            const mobName = document.getElementById('mobName').value;
+            const isSpawnable = document.getElementById("isSpawnable").checked;
+            const isSummonable = document.getElementById("isSummonable").checked;
+            const breedItem = document.getElementById("breedItem").value;
+            const babyScale = document.getElementById("babyScale").value;
+            const lootTableDirectory = document.getElementById("lootTableDirectory").value;
+            const entityFamily = document.getElementById("entityFamily").value;
 
-
-			// json code generator
-			const rawJson = generateJson(mobName, isSpawnable, isSummonable, breedItem, babyScale, lootTableDirectory, entityFamily) //passing peram value
-			const parsedJson = JSON.parse(rawJson)
-			document.getElementById('output').innerText = JSON.stringify(parsedJson, null, 3)
-            }
-
-    
+            const rawJson = generateJson(mobName, isSpawnable, isSummonable, breedItem, babyScale, lootTableDirectory, entityFamily);
+            const parsedJson = JSON.parse(rawJson);
+            document.getElementById('output').innerText = JSON.stringify(parsedJson, null, 3);
+        }
     </script>
-
-
 </body>
 </html>
