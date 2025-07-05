@@ -267,6 +267,24 @@
 
     <script src="entity.json.js"></script>
     <script>
+        //  deepcode3 : added project contributors
+        fetch('https://api.github.com/repos/morgii/mobject/contributors')
+        .then(response => response.json())
+        .then(data => {
+            const contributorsContainer = document.getElementById('contributorsContainer')
+            data.forEach(contributor => {
+                console.log(contributor.avatar_url)
+
+                const html = `<a href="${contributor.html_url}" target="_blank" rel="noopener noreferrer"
+                class="inline-block w-10 h-10 overflow-hidden rounded-full transition-transform duration-300 hover:scale-110">
+                <img src='${contributor.avatar_url} class="w-full h-full object-cover"'>
+                </a>`
+
+            contributorsContainer.innerHTML += html
+            });
+        })
+    </script>
+    <script>
         // lazycode : added realtime,download,copy
         function updateOutput() {
             const mobName = document.getElementById('mobName').value;
