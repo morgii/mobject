@@ -283,8 +283,6 @@
         .then(data => {
             const contributorsContainer = document.getElementById('contributorsContainer')
             data.forEach(contributor => {
-                console.log(contributor.avatar_url)
-
                 const html = `<a href="${contributor.html_url}" target="_blank" rel="noopener noreferrer"
                 class="inline-block w-10 h-10 overflow-hidden rounded-full transition-transform duration-300 hover:scale-110">
                 <img src='${contributor.avatar_url} class="w-full h-full object-cover"'>
