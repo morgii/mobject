@@ -99,6 +99,16 @@
                         <p id="babyScaleValue" class="text-sm text-slate-400 mt-1">0.5</p>
                     </div>
 
+
+                    <div class="input-label-container">
+                        <label class="input-label">Movement value (0.1 to 2.0)</label>
+                        <input type="range" min="0.1" max="2" step="0.1" value="0.25" id="movementValue" 
+                               oninput="document.getElementById('movementValueValue').innerText = this.value"
+                               class="w-full">
+                        <p id="movementValueValue" class="text-sm text-slate-400 mt-1">0.25</p>
+                    </div>
+
+
                     <div class="input-label-container">
                         <label class="input-label">Loot table directory</label>
                         <input type="text" id="lootTableDirectory" value="loot_tables/entities/cow.json"
@@ -127,6 +137,24 @@
                             <option value="hostile">hostile</option>
                         </select>
                     </div>
+
+
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="input-label-container flex-1">
+                            <label class="input-label">Collision box height</label>
+                            <input type="number" id="collisionHeight" value="1" step="0.1" class="h-5 w-12 text-black">
+                        </div>
+                        <div class="input-label-container flex-1">
+                            <label class="input-label">Collision box width</label>
+                            <input type="number" id="collisionWidth" value="1" step="0.1" class="h-5 w-12 text-black">
+                        </div>
+                        <div class="input-label-container flex-1">
+                            <label class="input-label">Mob health</label>
+                            <input type="number" id="mobHealth" value="10" step="0.1" class="h-5 w-12 text-black">
+                        </div>
+                    </div>
+
+
 
                     <button onclick="submit()" 
                             class="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-lg font-medium transition mt-4">

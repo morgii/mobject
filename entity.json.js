@@ -1,4 +1,4 @@
-function generateJson(mobName, isSpawnable, isSummonable, breedItem, babyScale, lootTableDirectory, entityFamily) {
+function generateJson(mobName, isSpawnable, isSummonable, breedItem, babyScale, lootTableDirectory, entityFamily, collisionHeight, collisionWidth, mobHealth, movementValue) {
             return generatedJson = `
 {
     "format_version": "1.16.0",
@@ -74,13 +74,13 @@ function generateJson(mobName, isSpawnable, isSummonable, breedItem, babyScale, 
             "minecraft:jump.static": {},
             "minecraft:can_climb": {},
             "minecraft:collision_box": {
-                "width": 0.9,
-                "height": 1.3
+                "width": ${collisionWidth},
+                "height": ${collisionHeight}
             },
             "minecraft:nameable": {},
             "minecraft:health": {
-                "value": 10,
-                "max": 10
+                "value": ${mobHealth},
+                "max": ${mobHealth}
             },
             "minecraft:hurt_on_condition": {
                 "damage_conditions": [
@@ -97,7 +97,7 @@ function generateJson(mobName, isSpawnable, isSummonable, breedItem, babyScale, 
                 ]
             },
             "minecraft:movement": {
-                "value": 0.25
+                "value": ${movementValue}
             },
             "minecraft:despawn": {
                 "despawn_from_distance": {}
@@ -232,8 +232,14 @@ function generateJson(mobName, isSpawnable, isSummonable, breedItem, babyScale, 
             const babyScale = document.getElementById("babyScale").value;
             const lootTableDirectory = document.getElementById("lootTableDirectory").value;
             const entityFamily = document.getElementById("entityFamily").value;
+            const collisionHeight = document.getElementById("collisionHeight").value;
+            const collisionWidth = document.getElementById("collisionWidth").value;
+            const mobHealth = document.getElementById("mobHealth").value;
+            const movementValue = document.getElementById("movementValue").value;
 
-            const rawJson = generateJson(mobName, isSpawnable, isSummonable, breedItem, babyScale, lootTableDirectory, entityFamily);
+
+
+            const rawJson = generateJson(mobName, isSpawnable, isSummonable, breedItem, babyScale, lootTableDirectory, entityFamily, collisionHeight, collisionWidth, mobHealth, movementValue);
             const parsedJson = JSON.parse(rawJson);
             document.getElementById('output').innerText = JSON.stringify(parsedJson, null, 3);
         }

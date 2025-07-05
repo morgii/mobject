@@ -172,20 +172,6 @@
 				"hard_distance": 6,
 				"max_distance": 10
 			},
-			"minecraft:balloonable": {},
-			"minecraft:rideable": {
-				"seat_count": 1,
-				"family_types": [
-					"zombie"
-				],
-				"seats": {
-					"position": [
-						0,
-						1.105,
-						0
-					]
-				}
-			},
 			"minecraft:physics": {},
 			"minecraft:pushable": {
 				"is_pushable": true,
