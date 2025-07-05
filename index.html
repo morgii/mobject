@@ -9,41 +9,110 @@
         .json-container {
             max-height: 80vh;
             overflow-y: auto;
-            background-color: #1e293b;
+            background-color: #1a1b26;
+            border: 1px solid #414868;
         }
         .json-container::-webkit-scrollbar {
             width: 8px;
         }
         .json-container::-webkit-scrollbar-track {
-            background: #0f172a;
+            background: #16161e;
         }
         .json-container::-webkit-scrollbar-thumb {
-            background: #334155;
+            background: #414868;
             border-radius: 4px;
         }
+        .json-container::-webkit-scrollbar-thumb:hover {
+            background: #545c7e;
+        }
         .input-field {
-            background-color: #1e293b;
-            border-color: #334155;
+            background-color: #1a1b26;
+            border-color: #414868;
+            color: #c0caf5;
         }
         .input-field:focus {
             outline: none;
-            border-color: #60a5fa;
-            box-shadow: 0 0 0 1px #60a5fa;
+            border-color: #7aa2f7;
+            box-shadow: 0 0 0 1px #7aa2f7;
         }
-        /* Added label border styles */
         .input-label-container {
-            border: 1px solid #334155;
+            border: 1px solid #414868;
             border-radius: 0.375rem;
             padding: 0.5rem;
             margin-bottom: 0.5rem;
-            background-color: #1e293b;
+            background-color: #1a1b26;
         }
         .input-label {
             display: block;
             font-size: 0.875rem;
             font-weight: 500;
-            color: #e2e8f0;
+            color: #c0caf5;
             margin-bottom: 0.25rem;
+        }
+        
+        /* lazycode : Fixed wrapping for JSON output */
+        #output {
+            word-wrap: break-word !important;
+            overflow-wrap: break-word !important;
+            white-space: pre-wrap !important;
+        }
+        
+        body {
+            background-color: #16161e;
+            color: #c0caf5;
+        }
+        
+        .bg-slate-900 {
+            background-color: #16161e !important;
+        }
+        
+        .bg-slate-800 {
+            background-color: #1a1b26 !important;
+            border: 1px solid #414868;
+        }
+        
+        .text-slate-100 {
+            color: #c0caf5 !important;
+        }
+        
+        .text-slate-400 {
+            color: #565f89 !important;
+        }
+        
+        .border-slate-700 {
+            border-color: #414868 !important;
+        }
+        
+        .bg-blue-600 {
+            background-color: #7aa2f7 !important;
+        }
+        
+        .bg-blue-600:hover {
+            background-color: #7dcfff !important;
+        }
+        
+        .text-blue-400 {
+            color: #7dcfff !important;
+        }
+        
+        input[type="checkbox"] {
+            accent-color: #7aa2f7;
+        }
+        
+        input[type="range"] {
+            accent-color: #7aa2f7;
+        }
+        
+        select {
+            background-color: #1a1b26;
+            color: #c0caf5;
+            border-color: #414868;
+        }
+        
+        select:focus {
+            outline: none;
+            border-color: #7aa2f7;
+            box-shadow: 0 0 0 1px #7aa2f7;
         }
     </style>
 </head>
@@ -54,7 +123,7 @@
         <div class="flex flex-col lg:flex-row gap-8">
             <!-- Input Section -->
             <div class="flex-1 bg-slate-800 p-6 rounded-xl shadow-lg">
-                <h2 class="text-xl font-semibold mb-4 border-b border-slate-700 pb-2">Description</h2>
+                <h2 class="text-xl font-bold mb-4 border-b border-slate-700 pb-2">Description</h2>
                 
                 <div class="space-y-4">
                     <div class="input-label-container">
@@ -99,7 +168,6 @@
                         <p id="babyScaleValue" class="text-sm text-slate-400 mt-1">0.5</p>
                     </div>
 
-
                     <div class="input-label-container">
                         <label class="input-label">Movement value (0.1 to 2.0)</label>
                         <input type="range" min="0.1" max="2" step="0.1" value="0.25" id="movementValue" 
@@ -107,7 +175,6 @@
                                class="w-full">
                         <p id="movementValueValue" class="text-sm text-slate-400 mt-1">0.25</p>
                     </div>
-
 
                     <div class="input-label-container">
                         <label class="input-label">Loot table directory</label>
@@ -138,54 +205,48 @@
                         </select>
                     </div>
 
-
                     <div class="grid grid-cols-2 gap-4">
                         <div class="input-label-container flex-1">
                             <label class="input-label">Collision box height</label>
-                            <input type="number" id="collisionHeight" value="1" step="0.1" class="h-5 w-12 text-black">
+                            <input type="number" id="collisionHeight" value="1" step="0.1" class="w-full p-2 rounded input-field">
                         </div>
                         <div class="input-label-container flex-1">
                             <label class="input-label">Collision box width</label>
-                            <input type="number" id="collisionWidth" value="1" step="0.1" class="h-5 w-12 text-black">
+                            <input type="number" id="collisionWidth" value="1" step="0.1" class="w-full p-2 rounded input-field">
                         </div>
                         <div class="input-label-container flex-1">
                             <label class="input-label">Mob health</label>
-                            <input type="number" id="mobHealth" value="10" step="0.1" class="h-5 w-12 text-black">
+                            <input type="number" id="mobHealth" value="10" step="0.1" class="w-full p-2 rounded input-field">
                         </div>
                     </div>
 
-
-
                     <button onclick="submit()" 
-                            class="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-lg font-medium transition mt-4">
+                            class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg transition mt-4">
                         Generate JSON
                     </button>
                 </div>
             </div>
 
-            <!-- Output Section -->
+            <!-- Output Section \ for morgii : change the size if u dont like the new one -->
             <div class="flex-1 bg-slate-800 p-6 rounded-xl shadow-lg">
                 <h2 class="text-xl font-semibold mb-4 border-b border-slate-700 pb-2">Generated entity.json</h2>
-                <div class="json-container p-4 rounded-lg">
-                    <pre id="output" class="whitespace-pre-wrap font-mono text-sm">
-                {
-                "format_version": "1.16.0",
-                "minecraft:entity": {
-                    "description": {
-                    "identifier": "mob:mobname",
-                    "is_spawnable": true,
-                    "is_summonable": true,
-                    "is_experimental": false
-                    }
-                }
+                <div class="json-container p-4 rounded-lg" style="min-height: 900px;"> 
+                    <pre id="output" class="whitespace-pre-wrap font-mono text-sm" style="word-wrap: break-word; overflow-wrap: break-word; white-space: pre-wrap;">{
+  "format_version": "1.16.0",
+  "minecraft:entity": {
+    "description": {
+      "identifier": "mob:mobname",
+      "is_spawnable": true,
+      "is_summonable": true,
+      "is_experimental": false
+    }
+  }
 }</pre>
                 </div>
             </div>
         </div>
     </div>
 
-
-
-    <script src="entity.json.js">    </script>
+    <script src="entity.json.js"></script>
 </body>
 </html>
